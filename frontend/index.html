@@ -129,7 +129,8 @@
       storyBox.innerText = "";
 
       try {
-        const res = await fetch("http://localhost:8000/generate-story", {
+        const res = await fetch("https://text-generator-agents.onrender.com/", {
+          //await fetch("http://localhost:8000/generate-story", {
           method: "POST",
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify({ prompt, language, voice, api_key: document.getElementById("apikey").value })
