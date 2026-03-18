@@ -38,7 +38,13 @@ completion = client.chat.completions.create(
 
 # print response
 print(completion.choices[0].message.content)
+story = completion.choices[0].message.content
 
-#  very unhappy _____.
+audio_response = client.audio.speech.create(
+    model="gpt-4o-mini-tts",
+    voice="alloy",  # you can change voice later
+    input=story
+)
 
-# Once upon a time there was a very unhappy mermaid.
+with open("story.mp3", "wb") as f:
+    f.write(audio_response.content)

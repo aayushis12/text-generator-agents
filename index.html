@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Story Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 16px;
+      width: 400px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input {
+        width: 95%;
+    }
+
+    select, button {
+        width: 100%;
+    }
+
+    input, select, button {
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+    }
+
+    input, select {
+      background: white;
+      color: black;
+    }
+
+    button {
+      background: #ff7a18;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    button:hover {
+      background: #ff9a3c;
+    }
+
+    #story {
+      margin-top: 20px;
+      background: rgba(0,0,0,0.2);
+      padding: 15px;
+      border-radius: 10px;
+      max-height: 150px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+
+    audio {
+      margin-top: 15px;
+      width: 100%;
+    }
+
+    .loading {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>✨ AI Story Generator</h1>
+
+    <input id="prompt" placeholder="Enter your story idea..." width="10px"/>
+
+    <select id="language">
+      <option>English</option>
+      <option>Hindi</option>
+      <option>Spanish</option>
+    </select>
+
+    <select id="voice">
+      <option value="alloy">Alloy</option>
+      <option value="verse">Verse</option>
+      <option value="narrator">Narrator</option>
+    </select>
+
+    <button onclick="generate()">Generate Story</button>
+
+    <div class="loading" id="loading">⏳ Generating magic...</div>
+
+    <div id="story"></div>
+
+    <audio id="audio" controls></audio>
+  </div>
+
+  <script>
+    async function generate() {
+      const prompt = document.getElementById("prompt").value;
+      const language = document.getElementById("language").value;
+      const voice = document.getElementById("voice").value;
+
+      const loading = document.getElementById("loading");
+      const storyBox = document.getElementById("story");
+
+      loading.style.display = "block";
+      storyBox.innerText = "";
+
+      try {
+        const res = await fetch("http://localhost:8000/generate-story", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({ prompt, language, voice })
+        });
+
+        const data = await res.json();
+
+        storyBox.innerText = data.story;
+        document.getElementById("audio").src = data.audio_url;
+
+      } catch (err) {
+        storyBox.innerText = "❌ Something went wrong.";
+      }
+
+      loading.style.display = "none";
+    }
+  </script>
+</body>
+</html>
