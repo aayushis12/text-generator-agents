@@ -129,7 +129,7 @@
       storyBox.innerText = "";
 
       try {
-        const res = await fetch("https://text-generator-agents.onrender.com/", {
+        const res = await fetch("https://text-generator-agents.onrender.com/generate-story", {
           //await fetch("http://localhost:8000/generate-story", {
           method: "POST",
           headers: {"Content-Type": "application/json"},
