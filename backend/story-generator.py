@@ -18,22 +18,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-client = OpenAI(api_key=os.getenv("OPENAI_KEY"))
+# client = OpenAI(api_key=os.getenv("OPENAI_KEY"))
 
 class StoryRequest(BaseModel):
     prompt: str
     language: str
     voice: str
+    api_key: str
 
 @app.post("/generate-story")
 def generate_story(req: StoryRequest):
     # 1. generate story
+    client = OpenAI(api_key=req.api_key)
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {
                 "role": "system",
-                "content": f"You are a storyteller for kids. Write in {req.language} with simple and fun language."
+                "content": f"You are a storyteller for kids. Write in {req.language} with simple, fun and short stories."
             },
             {
                 "role": "user",

@@ -104,6 +104,9 @@
       <option value="narrator">Narrator</option>
     </select>
 
+    <input id="apikey" placeholder="Enter your OpenAI API key (sk-...)" />
+    <p>🔒 Your API key is not stored. It is only used for this request.</p>
+
     <button onclick="generate()">Generate Story</button>
 
     <div class="loading" id="loading">⏳ Generating magic...</div>
@@ -129,7 +132,7 @@
         const res = await fetch("http://localhost:8000/generate-story", {
           method: "POST",
           headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({ prompt, language, voice })
+          body: JSON.stringify({ prompt, language, voice, api_key: document.getElementById("apikey").value })
         });
 
         const data = await res.json();
