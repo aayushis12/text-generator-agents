@@ -139,7 +139,7 @@
         const data = await res.json();
 
         storyBox.innerText = data.story;
-        document.getElementById("audio").src = data.audio_url;
+        document.getElementById("audio").src = "data:audio/mp3;base64," + data.audio;
 
       } catch (err) {
         storyBox.innerText = "❌ Something went wrong.";

@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
+import base64
 
 load_dotenv()
 
@@ -53,13 +54,11 @@ def generate_story(req: StoryRequest):
         input=story
     )
 
-    audio_file = "story.mp3"
-    with open(audio_file, "wb") as f:
-        f.write(audio.content)
+    audio_base64 = base64.b64encode(audio.content).decode("utf-8")
 
     return {
         "story": story,
-        "audio_url": "http://localhost:8000/story.mp3"
+        "audio": audio_base64
     }
 
 from fastapi.staticfiles import StaticFiles
