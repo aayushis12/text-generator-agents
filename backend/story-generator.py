@@ -36,7 +36,7 @@ def generate_story(req: StoryRequest):
         messages=[
             {
                 "role": "system",
-                "content": f"You are a storyteller for kids. Write in {req.language} with simple, fun and short stories."
+                "content": f"You are a storyteller for kids. Write in {req.language} with simple, fun and short stories under 800 characters. Make sure the story is engaging and suitable for children."
             },
             {
                 "role": "user",
